@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+
+# runtime
+.cache/
+state/
+*.log
+
+# deno
+.deno/
+
+# node
+node_modules/
+
+# os
+.DS_Store

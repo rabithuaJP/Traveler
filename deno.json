@@ -1,0 +1,12 @@
+{
+  "name": "traveler",
+  "version": "0.1.0",
+  "exports": "./src/cli.ts",
+  "tasks": {
+    "fmt": "deno fmt",
+    "check": "deno check src/cli.ts",
+    "run": "deno run -A --env-file=.env src/cli.ts",
+    "run:once": "deno run -A --env-file=.env src/cli.ts run --config configs/default.yaml",
+    "run:daily": "deno run -A --env-file=.env src/cli.ts run --config configs/default.yaml"
+  }
+}
