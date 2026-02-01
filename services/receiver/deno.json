@@ -1,0 +1,10 @@
+{
+  "name": "traveler-receiver",
+  "version": "0.1.0",
+  "exports": "./mod.ts",
+  "tasks": {
+    "fmt": "deno fmt",
+    "check": "deno check mod.ts",
+    "start": "deno run -A --env-file=.env mod.ts"
+  }
+}
