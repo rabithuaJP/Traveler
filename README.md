@@ -39,6 +39,63 @@ deno task run -- run --config configs/default.yaml
 It will fetch the configured RSS feeds, pick up to `ranking.daily_limit` items,
 and write them to Rote.
 
+## Webhook listener
+
+Traveler can also run as a simple webhook receiver (similar to `webhookd`),
+accepting your service events as JSON and writing them to Rote as notes.
+
+### Enable and run
+
+1. Set security env (at least one):
+
+```bash
+WEBHOOK_TOKEN=your_token
+# or
+WEBHOOK_SECRET=your_hmac_secret
+```
+
+2. Enable the webhook in config:
+
+```yaml
+webhook:
+  enabled: true
+  port: 8787
+  path: "/webhook"
+```
+
+3. Start the server:
+
+```bash
+deno task run:webhook
+```
+
+### Request format
+
+Send a `POST` to the configured path with `Content-Type: application/json`.
+
+Example body:
+
+```json
+{
+  "title": "Build finished",
+  "event": "ci.build.complete",
+  "source": "ci",
+  "content": "Main branch build passed",
+  "url": "https://ci.example.com/build/123",
+  "tags": ["inbox", "ci"],
+  "payload": { "build_id": 123, "duration_sec": 92 }
+}
+```
+
+### Security headers
+
+- Token auth: `Authorization: Bearer <WEBHOOK_TOKEN>` or
+  `X-Webhook-Token: <WEBHOOK_TOKEN>`
+- HMAC signature: `X-Webhook-Signature: sha256=<hex>` (HMAC-SHA256 of raw body
+  using `WEBHOOK_SECRET`)
+- If both `WEBHOOK_TOKEN` and `WEBHOOK_SECRET` are set, both checks are
+  enforced.
+
 ## Configuration
 
 See `configs/default.yaml`. All fields are optional.
