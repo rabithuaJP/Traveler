@@ -35,3 +35,9 @@ output:
     enabled: true
     tags: ["inbox", "traveler"]
     add_daily_digest: true
+
+webhook:
+  enabled: false
+  port: 8787
+  path: "/webhook"
+  max_body_kb: 512

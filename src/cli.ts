@@ -1,10 +1,11 @@
 import { parseArgs } from "jsr:@std/cli/parse-args";
 import { parse as parseYaml } from "jsr:@std/yaml";
 import { runOnce } from "./core/pipeline.ts";
+import { startWebhookServer } from "./core/webhook.ts";
 
 function usage(): void {
   console.log(
-    `Traveler\n\nUsage:\n  deno task run -- <cmd> [--config path]\n\nCommands:\n  run   Fetch sources, select items, and write to Rote\n\nOptions:\n  --config <path>   YAML config (default: configs/default.yaml)\n`,
+    `Traveler\n\nUsage:\n  deno task run -- <cmd> [--config path]\n\nCommands:\n  run      Fetch sources, select items, and write to Rote\n  webhook  Start a webhook listener to create notes from events\n\nOptions:\n  --config <path>   YAML config (default: configs/default.yaml)\n`,
   );
 }
 
@@ -31,9 +32,16 @@ if (import.meta.main) {
     const cfg = await loadConfig(String(args.config));
     await runOnce(cfg);
     Deno.exit(0);
+  } else if (cmd === "webhook") {
+    const cfg = await loadConfig(String(args.config));
+    if (cfg?.webhook?.enabled === false) {
+      console.error("Webhook server disabled by config.");
+      Deno.exit(1);
+    }
+    await startWebhookServer(cfg);
+  } else {
+    console.error(`Unknown command: ${cmd}`);
+    usage();
+    Deno.exit(1);
   }
-
-  console.error(`Unknown command: ${cmd}`);
-  usage();
-  Deno.exit(1);
 }

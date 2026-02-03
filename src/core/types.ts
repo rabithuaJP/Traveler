@@ -27,11 +27,19 @@ export type OutputRoteConfig = {
   add_daily_digest?: boolean;
 };
 
+export type WebhookConfig = {
+  enabled?: boolean;
+  port?: number;
+  path?: string;
+  max_body_kb?: number;
+};
+
 export type TravelerConfig = {
   persona?: PersonaConfig;
   interests?: InterestsConfig;
   sources?: SourceConfig[];
   ranking?: RankingConfig;
+  webhook?: WebhookConfig;
   output?: {
     rote?: OutputRoteConfig;
   };
