@@ -100,6 +100,18 @@ Example body:
 
 See `configs/default.yaml`. All fields are optional.
 
+## Passive event receiver (optional)
+
+Traveler can optionally run a small webhook receiver service (similar to
+`webhookd`) so it can react to **incoming** events.
+
+See: `services/receiver/`.
+
+- Health: `GET /healthz`
+- Webhook: `POST /webhook` (configurable)
+- Optional HMAC signature check via `RECEIVER_SHARED_SECRET`
+- Optional forward into OpenClaw via `OPENCLAW_GATEWAY_URL/TOKEN`
+
 ## OpenClaw integration
 
 You can run Traveler via OpenClaw `cron` (recommended) so it runs daily without
